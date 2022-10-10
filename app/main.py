@@ -7,15 +7,15 @@ import pandas
 from datetime import date
 from datetime import datetime
 
-## We'll try to use the local caldav library, not the system-installed
+# We'll try to use the local caldav library, not the system-installed
 sys.path.insert(0, "..")
 sys.path.insert(0, ".")
 
-
-## Set calendar vars
+# Set calendar vars
 caldav_url = os.environ.get('CALDAV_URL')
 caldav_user = os.environ.get('CALDAV_USER')
 caldav_password = os.environ.get('CALDAV_PASSWORD')
+# Set abseits.biz vars
 abseits_url = os.environ.get('ABSEITS_URL')
 abseits_user = os.environ.get('ABSEITS_USER')
 abseits_password = os.environ.get('ABSEITS_PASSWORD')
@@ -31,15 +31,23 @@ def main():
         "OK": "Submit",
     })
 
+    # Check if login was successful
+    assert "falsch!" not in request.text
+
+    get_full_table = session.post("https://abseits.biz/php/tools/AJAXTools.php", data="rs=GetSpieleTableFullLayer&rst=&rsrnd=1665442831994&rsargs[]=400000000205&rsargs[]=BZL&rsargs[]=0&rsargs[]=&rsargs[]=")
+
+
     # get table
     page = session.get(abseits_url)
 
     parsed = bs4.BeautifulSoup(page.text, "lxml")
-    container = parsed.find("div", {"class": "spiele_container"})
+    container = parsed.find("div", {"id": "FullLayer400000000205"})
     table = container.find("table")
 
     table_str = str(table)
     a = pandas.read_html(table_str)[0]
+
+    #print(a)
 
     # Initiate DAVClient object
     client = caldav.DAVClient(url=caldav_url, username=caldav_user, password=caldav_password)
