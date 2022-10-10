@@ -34,7 +34,18 @@ def main():
     # Check if login was successful
     assert "falsch!" not in request.text
 
-    get_full_table = session.post("https://abseits.biz/php/tools/AJAXTools.php", data="rs=GetSpieleTableFullLayer&rst=&rsrnd=1665442831994&rsargs[]=400000000205&rsargs[]=BZL&rsargs[]=0&rsargs[]=&rsargs[]=")
+    get_full_table = session.post("https://abseits.biz/php/tools/AJAXTools.php", data=[
+        ('rs', 'GetSpieleTableFullLayer'),
+        ('rst', ''),
+        ('rsrnd', '1665444178344'),
+        ('rsargs[]', '400000000205'),
+        ('rsargs[]', 'BZL'),
+        ('rsargs[]', '0'),
+        ('rsargs[]', ''),
+        ('rsargs[]', ''),
+    ])
+    assert resp.status_code == 200
+
 
 
     # get table
