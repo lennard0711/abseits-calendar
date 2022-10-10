@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    container_name: abseits-calendar
+    environment:
+      - CALDAV_URL=https://cloud.lemat.de/remote.php/dav
+      - CALDAV_CALENDAR=Test
+      - CALDAV_USER=lennard0711
+      - ABSEITS_URL="https://abseits.biz/php/index.php?pagename=Spiele&startpage=spiele%252Fspiele.php%253Fuid%253D400000000205"
+    env_file: .env
