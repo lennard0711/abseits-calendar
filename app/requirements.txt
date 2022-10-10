@@ -1,2 +1,5 @@
 pandas
 caldav
+requests
+bs4
+pandas

@@ -8,4 +8,5 @@ services:
       - CALDAV_CALENDAR=Test
       - CALDAV_USER=lennard0711
       - ABSEITS_URL="https://abseits.biz/php/index.php?pagename=Spiele&startpage=spiele%252Fspiele.php%253Fuid%253D400000000205"
+      - ABSEITS_USER=lennard indlekofer
     env_file: .env
