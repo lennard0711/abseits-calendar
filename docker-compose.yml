@@ -4,10 +4,10 @@ services:
     build: .
     container_name: abseits-calendar
     environment:
-      - CALDAV_URL=https://cloud.lemat.de/remote.php/dav
-      - CALDAV_CALENDAR=Test
-      - CALDAV_USER=lennard0711
-      - ABSEITS_UID=400000000205
+      - CALDAV_URL=https://nextcloud.example.com/remote.php/dav
+      - CALDAV_CALENDAR=Abseits
+      - CALDAV_USER=nutzername
+      - ABSEITS_UID=replaceme
       - ABSEITS_KADER=BZL
-      - ABSEITS_USER=lennard indlekofer
+      - ABSEITS_USER=vorname nachname
     env_file: .env
