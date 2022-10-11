@@ -35,6 +35,7 @@ def main():
     # Check if the login was successful
     assert "falsch!" not in request.text
 
+    # get the table with all games
     get_full_table = session.post("https://abseits.biz/php/tools/AJAXTools.php", data=[
         ('rs', 'GetSpieleTableFullLayer'),
         ('rst', ''),
