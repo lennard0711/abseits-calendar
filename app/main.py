@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 import caldav
 import requests
 import bs4
@@ -45,14 +46,13 @@ def main():
         ('rsargs[]', ''),
     ])
 
-    raw = get_full_table.text[50:-9].replace("\\", "")
-    table = pd.read_html(raw)[0]
+    raw = get_full_table.text[50:-9].replace("u00e4", "ä").replace("u00c4", "Ä").replace("u00fc", "ü").replace("u00dc", "Ü").replace("u00f6", "ö").replace("u00d6", "Ö").replace("u00df", "ß").replace("\\", "")
+    clean_html = re.sub("\(Spielort:\s[^)]*\)", "", raw)
+    df = pd.read_html(clean_html, header=[0])[0]
 
-    print(table)
+    df = df[["Datum", "Liga", "Paarung"]]
 
-
-
-    #string = dirty_table.to_string().replace("u00e4", "ä").replace("u00c4", "Ä").replace("u00fc", "ü").replace("u00dc", "Ü").replace("u00f6", "ö").replace("u00d6", "Ö").replace("u00df", "ß")
+    print(df)
 
     # Initiate DAVClient object
     client = caldav.DAVClient(url=caldav_url, username=caldav_user, password=caldav_password)
