@@ -4,12 +4,8 @@ import caldav
 import requests
 import bs4
 import pandas as pd
-from datetime import date
-from datetime import datetime
-
-# We'll try to use the local caldav library, not the system-installed
-sys.path.insert(0, "..")
-sys.path.insert(0, ".")
+import time
+import datetime
 
 # Get caldav vars from system environment variables set by Docker
 caldav_url = os.environ.get('CALDAV_URL')
@@ -20,6 +16,9 @@ abseits_uid = os.environ.get('ABSEITS_UID')
 abseits_kader = os.environ.get('ABSEITS_KADER')
 abseits_user = os.environ.get('ABSEITS_USER')
 abseits_password = os.environ.get('ABSEITS_PASSWORD')
+# Create unix timestamp in ms for the AJAX request
+unix_time = round(time.time() * 1000)
+
 
 def main():
     session = requests.Session()
@@ -38,7 +37,7 @@ def main():
     get_full_table = session.post("https://abseits.biz/php/tools/AJAXTools.php", data=[
         ('rs', 'GetSpieleTableFullLayer'),
         ('rst', ''),
-        ('rsrnd', '1665444178344'),
+        ('rsrnd', unix_time),
         ('rsargs[]', abseits_uid),
         ('rsargs[]', abseits_kader),
         ('rsargs[]', '0'),
@@ -49,7 +48,7 @@ def main():
     raw = get_full_table.text[50:-9].replace("\\", "")
     table = pd.read_html(raw)[0]
 
-    print(test)
+    print(table)
 
 
 
