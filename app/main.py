@@ -69,30 +69,49 @@ def main():
         # calendar did exist, probably it was made on an earlier run
         # of this script
     except caldav.error.NotFoundError:
-        # Let's create a calendar
-        my_calendar = my_principal.calendar(name=os.environ.get('CALDAV_CALENDAR'))
+        exit()
 
+    ##
+    ## Here happens the actual work
+    ##
 
+    # iterrate through all rows in the dataframe
     for row in df.itertuples(index=False):
+        # create datetime object with match time start from coloumn 0 of each row
         match_time = datetime.strptime(row[0], "%d.%m.%Y (%H:%M)")
+        # each event should start 2 hours before the match time
         event_start = match_time + timedelta(hours=-2)
+        # each event should end 3 hours after match time
         event_end = match_time + timedelta(hours=3)
+        # the event name should consist of the league in coloumn 2 and the matchup in coloumn 3
         event_name = row[1] + " | " + row[2]
 
+        # check all events during the event timeframe
         events_fetched = my_calendar.date_search(
             start=event_start, end=event_end, expand=True
         )
 
+        # Initialize variable event_exist for later
+        event_exist = False
+
+        # Check all events in our timeframe and compare the summary
         for event in events_fetched:
             found_event = event.icalendar_instance.subcomponents[0]["summary"]
             if found_event == event_name:
-                continue
+                # If the found event equals the summary of our event set event_exist to True
+                event_exist = True
 
-        create_event = my_calendar.save_event(
-            dtstart=event_start,
-            dtend=event_end,
-            summary=event_name,
-        )
+        # Id the event exist, continue with our for-loop.
+        # Else create our event
+        if event_exist == True:
+            continue
+        else:
+            print("Create event " + event_name)
+            create_event = my_calendar.save_event(
+                dtstart=event_start,
+                dtend=event_end,
+                summary=event_name,
+            )
 
 if __name__ == '__main__':
     main()
