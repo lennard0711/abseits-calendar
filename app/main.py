@@ -114,4 +114,7 @@ def main():
             )
 
 if __name__ == '__main__':
-    main()
+    # We're in Docker, so run forever but only every 30min (1800s)
+    while True:
+        main()
+        time.sleep(1800)
