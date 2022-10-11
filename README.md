@@ -17,7 +17,7 @@ Die Variable `ABSEITS_KADER` kann folgende Werte haben:
 
 ### ABSEITS_UID
 Die eigene `ABSEITS_UID` kann wie folgt herausgefunden werden:
-1. Man öffnet https://abeits.biz
+1. Man öffnet https://abseits.biz
 2. Unter `Spiele` wählt man den eigenen Kader aus
 3. Rechtsklick auf den eigenen Namen
 4. Link in neuem Tab öffnen
