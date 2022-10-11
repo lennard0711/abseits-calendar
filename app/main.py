@@ -94,6 +94,12 @@ def main():
                     dtend=event_end,
                     summary=event_name,
                 )
+        else:
+            create_event = my_calendar.save_event(
+                dtstart=event_start,
+                dtend=event_end,
+                summary=event_name,
+            )
 
 if __name__ == '__main__':
     main()
