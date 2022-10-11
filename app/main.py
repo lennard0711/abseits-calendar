@@ -82,17 +82,17 @@ def main():
         events_fetched = my_calendar.date_search(
             start=event_start, end=event_end, expand=True
         )
-        
+
         for event in events_fetched:
-            found_event = event.icalendar_instance.subcomponents["summary"]
+            found_event = event.icalendar_instance.subcomponents[0]["summary"]
             if found_event == event_name:
                 continue
-            else:
-                create_event = my_calendar.save_event(
-                dtstart=event_start,
-                dtend=event_end,
-                summary=event_name,
-            )
+
+        create_event = my_calendar.save_event(
+            dtstart=event_start,
+            dtend=event_end,
+            summary=event_name,
+        )
 
 if __name__ == '__main__':
     main()
