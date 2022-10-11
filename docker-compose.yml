@@ -7,6 +7,7 @@ services:
       - CALDAV_URL=https://cloud.lemat.de/remote.php/dav
       - CALDAV_CALENDAR=Test
       - CALDAV_USER=lennard0711
-      - ABSEITS_URL=https://abseits.biz/php/index.php?pagename=Spiele&startpage=spiele%252Fspiele.php%253Fuid%253D400000000205#400000000205
+      - ABSEITS_UID=400000000205
+      - ABSEITS_KADER=BZL
       - ABSEITS_USER=lennard indlekofer
     env_file: .env
