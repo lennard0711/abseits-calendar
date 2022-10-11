@@ -1,5 +1,6 @@
 pandas
 caldav
+icalendar
 requests
 bs4
 pandas

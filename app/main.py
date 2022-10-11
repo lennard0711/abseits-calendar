@@ -6,7 +6,7 @@ import requests
 import bs4
 import pandas as pd
 import time
-import datetime
+from datetime import date, datetime, timedelta
 
 # Get caldav vars from system environment variables set by Docker
 caldav_url = os.environ.get('CALDAV_URL')
@@ -46,18 +46,16 @@ def main():
         ('rsargs[]', ''),
     ])
 
+    # Get the data from abseits.biz, clean it up and put it in a pandas dataframe
     raw = get_full_table.text[50:-9].replace("u00e4", "ä").replace("u00c4", "Ä").replace("u00fc", "ü").replace("u00dc", "Ü").replace("u00f6", "ö").replace("u00d6", "Ö").replace("u00df", "ß").replace("\\", "")
     clean_html = re.sub("\(Spielort:\s[^)]*\)", "", raw)
     df = pd.read_html(clean_html, header=[0])[0]
-
     df = df[["Datum", "Liga", "Paarung"]]
-
-    print(df)
 
     # Initiate DAVClient object
     client = caldav.DAVClient(url=caldav_url, username=caldav_user, password=caldav_password)
 
-    # Fetch a principal object.
+    # Fetch a principal object
     my_principal = client.principal()
 
     # Fetch principals calendars
@@ -74,7 +72,27 @@ def main():
         # Let's create a calendar
         my_calendar = my_principal.calendar(name=os.environ.get('CALDAV_CALENDAR'))
 
-    all_events = my_calendar.events()
+
+    for row in df.itertuples(index=False):
+        match_time = datetime.strptime(row[0], "%d.%m.%Y (%H:%M)")
+        event_start = match_time + timedelta(hours=-2)
+        event_end = match_time + timedelta(hours=3)
+        event_name = row[1] + " | " + row[2]
+
+        events_fetched = my_calendar.date_search(
+            start=event_start, end=event_end, expand=True
+        )
+        event = events_fetched[0]
+        found_event = event.icalendar_instance.subcomponents[0]["summary"]
+
+        if found_event == event_name:
+            continue
+        else:
+            create_event = my_calendar.save_event(
+            dtstart=event_start,
+            dtend=event_end,
+            summary=event_name,
+        )
 
 if __name__ == '__main__':
     main()
