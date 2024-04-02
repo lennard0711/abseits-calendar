@@ -1,6 +1,10 @@
 # abseits-calendar
 Mit diesem Projekt lassen sich die Ansetzungen von https://abseits.biz in einen Webkalender via CalDav importieren.
 
+## :warning: ARCHIVIERT :warning:
+Da ich nicht mehr in BaWü wohne und somit nicht mehr der SRG Stuttgart angehöre, archiviere ich das Projekt!
+> Stand 02.04.2024 sollte das Script weiterhin funktionieren.
+
 ## Benötigte Environment Variablen
 ### ABSEITS_KADER
 > :warning: **Die Variable muss dem aktuellen Kader, unter dem der Schiedsrichter auf abseits.biz zu finden ist, entsprechen**
